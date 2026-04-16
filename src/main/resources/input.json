@@ -1,0 +1,34 @@
+{
+  "system_config": {
+    "mla": 2,
+    "bin_size": 20
+  },
+  "infrastructure": {
+    "servers": ["S1", "S2", "S3", "S4", "S5"],
+    "links": [
+      {"from": "S1", "to": "S2", "id": "L1"},
+      {"from": "S2", "to": "S3", "id": "L2"},
+      {"from": "S3", "to": "S4", "id": "L3"},
+      {"from": "S4", "to": "S5", "id": "L4"},
+      {"from": "S5", "to": "S1", "id": "L5"}
+    ]
+  },
+  "tool_registry": [
+    { "name": "Iperf", "cpu_intensive": true, "channel_intensive": true },
+    { "name": "H.323 Beacon", "cpu_intensive": false, "channel_intensive": true },
+    { "name": "Pathchar", "cpu_intensive": true, "channel_intensive": false },
+    { "name": "Ping", "cpu_intensive": false, "channel_intensive": false },
+    { "name": "Traceroute", "cpu_intensive": false, "channel_intensive": false },
+    { "name": "Pathrate", "cpu_intensive": true, "channel_intensive": false },
+    { "name": "OWAMP", "cpu_intensive": false, "channel_intensive": false },
+    { "name": "ABwE", "cpu_intensive": false, "channel_intensive": true },
+    { "name": "Multicast Beacon", "cpu_intensive": false, "channel_intensive": true },
+    { "name": "BGP Beacon", "cpu_intensive": false, "channel_intensive": false }
+  ],
+  "jobs": [
+    { "id": "T1", "source": "S1", "destination": "S2", "tool": "Pathchar", "duration": 20 },
+    { "id": "T2", "source": "S2", "destination": "S3", "tool": "Iperf", "duration": 10 },
+    { "id": "T3", "source": "S3", "destination": "S5", "tool": "H.323 Beacon", "duration": 20 },
+    { "id": "T4", "source": "S5", "destination": "S1", "tool": "Iperf", "duration": 10 }
+  ]
+}
