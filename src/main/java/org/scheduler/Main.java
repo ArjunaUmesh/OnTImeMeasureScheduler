@@ -5,7 +5,6 @@ import org.scheduler.core.ConflictManager;
 import org.scheduler.core.Scheduler;
 import org.scheduler.models.InputConfig;
 import org.scheduler.utils.Logger;
-
 import java.io.InputStream;
 
 
