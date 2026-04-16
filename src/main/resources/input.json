@@ -1,7 +1,8 @@
 {
   "system_config": {
     "mla": 2,
-    "bin_size": 20
+    "bin_size": 20,
+    "execution_mode": "analysis"
   },
   "infrastructure": {
     "servers": ["S1", "S2", "S3", "S4", "S5"],

@@ -17,7 +17,7 @@ public class InputConfig {
     @JsonProperty("infrastructure")
     public Infrastructure infrastructure;
     @JsonProperty("tool_registry")
-    public List<ToolProfile> tool_registry;
+    public List<Tool> tool_registry;
     @JsonProperty("jobs")
     public List<Job> jobs;
     @Data

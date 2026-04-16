@@ -2,12 +2,11 @@ package org.scheduler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.scheduler.core.ConflictManager;
+import org.scheduler.core.Scheduler;
 import org.scheduler.models.InputConfig;
-import org.scheduler.models.Job;
 import org.scheduler.utils.Logger;
 
 import java.io.InputStream;
-import java.util.List;
 
 
 public class Main {
@@ -16,44 +15,18 @@ public class Main {
         try {
             ObjectMapper mapper = new ObjectMapper();
             InputStream is = Main.class.getResourceAsStream("/input.json");
-
             InputConfig config = mapper.readValue(is, InputConfig.class);
-
-            String fullDetail = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(config);
-            System.out.println("Full Project Configuration:");
-            logger.log(fullDetail);
-
+            String executionMode = config.getSystem_config().get("execution_mode").toString();
             ConflictManager conflictManager = new ConflictManager();
-            // 3. Generate the Tool Conflict Graph
             conflictManager.generateGraphs(config);
-            // 4. Print the result
+            Scheduler scheduler = new Scheduler(conflictManager);
+            int mla = (int) config.getSystem_config().get("mla");
+            int binSize = (int) config.getSystem_config().get("bin_size");
+            logger.log("\nInput Data : ");
+            logger.log(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(config));
             conflictManager.printToolGraph(logger);
-
             conflictManager.printPathRegistry(logger);
-
-            List<Job> jobs = config.getJobs();
-            // 2. Nested loop to check every unique pair of tasks
-            for (int i = 0; i < jobs.size(); i++) {
-                for (int j = i + 1; j < jobs.size(); j++) {
-                    Job t1 = jobs.get(i);
-                    Job t2 = jobs.get(j);
-
-                    // 3. Call your hasLinkConflict method
-                    boolean hasConflict = conflictManager.hasLinkConflict(
-                            t1.getSource(), t1.getDestination(),
-                            t2.getSource(), t2.getDestination()
-                    );
-
-                    // 4. Print the result neatly
-                    String result = hasConflict ? "HAS CONFLICT" : "NO CONFLICT";
-                    String output = String.format("%-20s vs \t\t%-20s -> %s",
-                            t1.getId() + " (" + t1.getTool() + ")",
-                            t2.getId() + " (" + t2.getTool() + ")",
-                            result);
-
-                    logger.log(output);
-                }
-            }
+            scheduler.run(config,logger,mla,binSize);
 
         } catch (Exception e) {
             e.printStackTrace();

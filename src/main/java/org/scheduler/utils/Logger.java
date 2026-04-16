@@ -3,13 +3,14 @@ package org.scheduler.utils;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Logger {
     private final String logFilePath;
 
     public Logger(String fileName) {
-        // This ensures the logs go into the 'target' folder of your project
-        this.logFilePath = "target/" + fileName + ".log";
+        this.logFilePath = "target/execution_" + DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss").format(LocalDateTime.now()) + ".log";
     }
 
     public void log(String message) {

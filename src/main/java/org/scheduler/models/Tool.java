@@ -5,7 +5,7 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ToolProfile {
+public class Tool {
     public String name;
     @JsonProperty("cpu_intensive")
     public boolean cpu_intensive;
